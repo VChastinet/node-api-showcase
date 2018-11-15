@@ -1,12 +1,12 @@
 const pg = require('pg');
-
-const connection = {
-    host: '127.0.0.1', 
-    port: 5432,
-    database: 'maindb',
-    user: 'vchastinet',
-    password: '123'
+let connection;
+try {
+    connection = require ('../local-db-config');
+} catch(error) {
+    console.log('production enviroment');
+    connection = process.env.DATABASE_URL;
 }
+
 const client = new pg.Client(connection);
 
 function dbConnectionMessage(erro) {
