@@ -1,0 +1,312 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Welcome Message Manager",
+        "description": "API do gerenciador de mensagens de boas-vindas",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:6660",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Message",
+            "description": "API para gerenciamento de mensagens"
+        },
+        {
+            "name": "Unidades Federativas",
+            "description": "API para listas as Ufs integradas com o sistema"
+        },
+        {
+            "name": "Autenticação",
+            "description": "API para realizar o login no sistema"
+        }
+    ],
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/message": {
+            "parameters": [
+                {
+                    "name": "authorization",
+                    "in": "header",
+                    "description": "Token de autenticação"
+                }
+            ],
+            "get": {
+                "tags": ["Message"],
+                "summary": "Retorna todas as mensagens de todas as uf's",
+                "responses": {
+                    "200": {
+                        "description": "Mensages encontradas",
+                        "schema": {
+                            "$ref": "#/definitions/Messages"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Cria uma nova mensagem",
+                "tags": ["Message"],
+                "parameters": [
+                    {
+                        "name": "Mensagem",
+                        "in": "body",
+                        "description": "A mensagem que será exibida ao usuário",
+                        "schema": {
+                            "$ref": "#/definitions/Message"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "Nova mensagem criada",
+                        "schema": {
+                            "$ref": "#/definitions/Message"
+                        }
+                    }
+                }
+            }
+        },
+        "/message/{UF}": {
+            "parameters": [
+                {
+                    "name": "UF",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID do estado",
+                    "type": "string"
+                },
+                {
+                    "name": "authorization",
+                    "in": "header",
+                    "description": "Token de autenticação"
+                }
+            ],
+            "get": {
+                "tags": ["Message"],
+                "summary": "Retorna a mensagem de uma UF específica",
+                "responses": {
+                    "200": {
+                        "description": "Mensagem encontrada",
+                        "schema": {
+                            "$ref": "#/definitions/Message"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Altera a mensagem de uma UF",
+                "tags": ["Message"],
+                "parameters": [
+                    {
+                        "name": "Mensagem",
+                        "in": "body",
+                        "description": "Conteúdo da mensagem",
+                        "schema": {
+                            "$ref": "#/definitions/Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Mensagem alterada",
+                        "schema": {
+                            "$ref": "#/definitions/Message"
+                        }
+                    }
+                }
+            }
+        },
+        "/message/{UF}/historico": {
+            "parameters": [
+                {
+                    "name": "UF",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID do estado",
+                    "type": "number"
+                },
+                {
+                    "name": "authorization",
+                    "in": "header",
+                    "description": "Token de autenticação"
+                }
+            ],
+            "get": {
+                "tags": ["Message"],
+                "summary": "Retorna o histórico de mensagens de uma UF específica",
+                "responses": {
+                    "200": {
+                        "description": "Mensagens encontrada",
+                        "schema": {
+                            "$ref": "#/definitions/Messages"
+                        }
+                    }
+                }
+            }
+        },
+        "/uf": {
+            "parameters": [
+            {
+                "name": "authorization",
+                "in": "header",
+                "description": "Token de autenticação"
+            }
+        ],
+            "get": {
+                "tags": ["Unidades Federativas"],
+                "summary": "Retorna todas as Uf's integradas com o sigfacil",
+                "responses": {
+                    "200": {
+                        "description": "Uf's encontradas",
+                        "schema": {
+                            "$ref": "#/definitions/Ufs"
+                        }
+                    }
+                }
+            }
+        },
+        "/uf/{UF}": {
+            "parameters": [
+                {
+                    "name": "UF",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID do estado",
+                    "type": "number"
+                },
+                {
+                    "name": "authorization",
+                    "in": "header",
+                    "description": "Token de autenticação"
+                }
+            ],
+            "get": {
+                "tags": ["Unidades Federativas"],
+                "summary": "Retorna uma Uf",
+                "responses": {
+                    "200": {
+                        "description": "Uf encontrada",
+                        "schema": {
+                            "$ref": "#/definitions/Uf"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/verify": {
+            "get": {
+                "summary": "Verifica validade do token",
+                "tags": ["Autenticação"],
+                "parameters": [
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "description": "Token de autenticação"
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Mensagem"
+                    }
+                }
+            }
+        },
+        "/auth": {
+            "post": {
+                "summary": "Login do usuário",
+                "tags": ["Autenticação"],
+                "parameters": [
+                    {
+                        "name": "Login",
+                        "in": "body",
+                        "description": "Login e senha do usuário",
+                        "schema": {
+                            "$ref": "#/definitions/Login"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Dados do usuário",
+                        "schema": {
+                            "$ref": "#/definitions/Usuario"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Message": {
+            "required": ["titulo", "corpo"],
+            "properties": {
+                "titulo": {
+                    "type": "string"
+                },
+                "corpo": {
+                    "type": "string"
+                },
+                "isAtivo": {
+                    "type": "boolean"
+                },
+                "uf": {
+                    "type": "number"
+                }
+            }
+        },
+        "Messages": {
+            "type": "array",
+            "$ref": "#/definitions/Message"
+        },
+        "Uf": {
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "sigla": {
+                    "type": "string"
+                }
+            }
+        },
+        "Ufs": {
+            "type": "array",
+            "$ref": "#/definitions/Uf"
+        },
+        "Login": {
+            "required": ["login", "senha"],
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "senha": { "type": "string" }
+            }
+        },
+        "Usuario": {
+            "properties": {
+                "token": { "type": "string" },
+                "user": {
+                    "type": "object",
+                    "properties": {
+                        "id": { "type": "number" },
+                        "nome": { "type": "string" },
+                        "cargo": { "type": "string" },
+                        "login": { "type": "string" },
+                        "ultimoAcesso": { "type": "string" }
+                    }
+                }
+            }
+        }
+    }
+}
