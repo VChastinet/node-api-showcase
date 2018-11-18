@@ -10,7 +10,7 @@ try {
 const client = new pg.Client(connection);
 
 function dbConnectionMessage(erro) {
-    return erro ? `Ocorreu um erro na conexão com o banco: ${erro}` : 'conectado ao banco de dados';
+    return erro ? `Error when connecting to database: ${erro}` : 'Connected to database';
 }
 
 client.connect((erro) => console.log(dbConnectionMessage(erro)));

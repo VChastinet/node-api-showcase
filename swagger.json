@@ -2,8 +2,8 @@
     "swagger": "2.0",
     "info": {
         "version": "1.0.0",
-        "title": "Welcome Message Manager",
-        "description": "API do gerenciador de mensagens de boas-vindas",
+        "title": "Welcome Artists DataBase",
+        "description": "API compiling female brazilian artists",
         "license": {
             "name": "MIT",
             "url": "https://opensource.org/licenses/MIT"
@@ -13,158 +13,178 @@
     "basePath": "/",
     "tags": [
         {
-            "name": "Message",
-            "description": "API para gerenciamento de mensagens"
+            "name": "Artists",
+            "description": "Manage the artists"
         },
         {
-            "name": "Unidades Federativas",
-            "description": "API para listas as Ufs integradas com o sistema"
+            "name": "States",
+            "description": "List brazilian States"
         },
         {
-            "name": "Autenticação",
-            "description": "API para realizar o login no sistema"
+            "name": "Authentication",
+            "description": "API for login and new users"
         }
     ],
     "schemes": ["http"],
     "consumes": ["application/json"],
     "produces": ["application/json"],
     "paths": {
-        "/message": {
-            "parameters": [
-                {
-                    "name": "authorization",
-                    "in": "header",
-                    "description": "Token de autenticação"
-                }
-            ],
+        "/artist": {
             "get": {
-                "tags": ["Message"],
-                "summary": "Retorna todas as mensagens de todas as uf's",
+                "tags": ["Artists"],
+                "summary": "Return all artists",
                 "responses": {
                     "200": {
-                        "description": "Mensages encontradas",
+                        "description": "Listing all artists",
                         "schema": {
-                            "$ref": "#/definitions/Messages"
+                            "$ref": "#/definitions/Artists"
                         }
                     }
                 }
             },
             "post": {
-                "summary": "Cria uma nova mensagem",
-                "tags": ["Message"],
+                "summary": "Add a new artist",
+                "tags": ["Artists"],
                 "parameters": [
                     {
-                        "name": "Mensagem",
+                        "name": "Artist",
                         "in": "body",
-                        "description": "A mensagem que será exibida ao usuário",
+                        "description": "New Artist to be added",
                         "schema": {
-                            "$ref": "#/definitions/Message"
+                            "$ref": "#/definitions/Artist"
                         }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "description": "Auth token"
                     }
                 ],
                 "produces": ["application/json"],
                 "responses": {
                     "201": {
-                        "description": "Nova mensagem criada",
+                        "description": "New artist added",
                         "schema": {
-                            "$ref": "#/definitions/Message"
+                            "$ref": "#/definitions/Artist"
                         }
                     }
                 }
             }
         },
-        "/message/{UF}": {
+        "/artist/state/{UF}": {
             "parameters": [
                 {
                     "name": "UF",
                     "in": "path",
                     "required": true,
-                    "description": "ID do estado",
+                    "description": "State ID",
                     "type": "string"
-                },
-                {
-                    "name": "authorization",
-                    "in": "header",
-                    "description": "Token de autenticação"
                 }
             ],
             "get": {
-                "tags": ["Message"],
-                "summary": "Retorna a mensagem de uma UF específica",
+                "tags": ["Artists"],
+                "summary": "Return all artists of chosen state",
                 "responses": {
                     "200": {
-                        "description": "Mensagem encontrada",
+                        "description": "Artists found",
                         "schema": {
-                            "$ref": "#/definitions/Message"
+                            "$ref": "#/definitions/Artists"
                         }
                     }
                 }
-            },
+            }
+        },
+        "/artist/tags/{TAG}": {
+            "parameters": [
+                {
+                    "name": "TAG",
+                    "in": "path",
+                    "required": true,
+                    "description": "category tags",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": ["Artists"],
+                "summary": "Return all artists with chosen tags",
+                "responses": {
+                    "200": {
+                        "description": "Artists found",
+                        "schema": {
+                            "$ref": "#/definitions/Artists"
+                        }
+                    }
+                }
+            }
+        },
+        "/artist/name/{NAME}": {
+            "parameters": [
+                {
+                    "name": "NAME",
+                    "in": "path",
+                    "required": true,
+                    "description": "artist's name",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": ["Artists"],
+                "summary": "Return artist by name",
+                "responses": {
+                    "200": {
+                        "description": "Artist found",
+                        "schema": {
+                            "$ref": "#/definitions/Artists"
+                        }
+                    }
+                }
+            }
+        },
+        "/artist/{ID}": {
+            "parameters": [
+                {
+                    "name": "Artist ID",
+                    "in": "path",
+                    "required": true,
+                    "description": "Artist's ID",
+                    "type": "number"
+                }
+            ],
             "put": {
-                "summary": "Altera a mensagem de uma UF",
-                "tags": ["Message"],
+                "summary": "Updates",
+                "tags": ["Artists"],
                 "parameters": [
                     {
-                        "name": "Mensagem",
+                        "name": "Artist",
                         "in": "body",
-                        "description": "Conteúdo da mensagem",
+                        "description": "New artist data",
                         "schema": {
-                            "$ref": "#/definitions/Message"
+                            "$ref": "#/definitions/Artist"
                         }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "description": "Auth token"
                     }
                 ],
                 "responses": {
                     "202": {
-                        "description": "Mensagem alterada",
+                        "description": "Artist updated",
                         "schema": {
-                            "$ref": "#/definitions/Message"
-                        }
-                    }
-                }
-            }
-        },
-        "/message/{UF}/historico": {
-            "parameters": [
-                {
-                    "name": "UF",
-                    "in": "path",
-                    "required": true,
-                    "description": "ID do estado",
-                    "type": "number"
-                },
-                {
-                    "name": "authorization",
-                    "in": "header",
-                    "description": "Token de autenticação"
-                }
-            ],
-            "get": {
-                "tags": ["Message"],
-                "summary": "Retorna o histórico de mensagens de uma UF específica",
-                "responses": {
-                    "200": {
-                        "description": "Mensagens encontrada",
-                        "schema": {
-                            "$ref": "#/definitions/Messages"
+                            "$ref": "#/definitions/Artist"
                         }
                     }
                 }
             }
         },
         "/uf": {
-            "parameters": [
-            {
-                "name": "authorization",
-                "in": "header",
-                "description": "Token de autenticação"
-            }
-        ],
             "get": {
-                "tags": ["Unidades Federativas"],
-                "summary": "Retorna todas as Uf's integradas com o sigfacil",
+                "tags": ["States"],
+                "summary": "Return all states",
                 "responses": {
                     "200": {
-                        "description": "Uf's encontradas",
+                        "description": "States found",
                         "schema": {
                             "$ref": "#/definitions/Ufs"
                         }
@@ -178,21 +198,16 @@
                     "name": "UF",
                     "in": "path",
                     "required": true,
-                    "description": "ID do estado",
+                    "description": "state's ID",
                     "type": "number"
-                },
-                {
-                    "name": "authorization",
-                    "in": "header",
-                    "description": "Token de autenticação"
                 }
             ],
             "get": {
-                "tags": ["Unidades Federativas"],
-                "summary": "Retorna uma Uf",
+                "tags": ["States"],
+                "summary": "Return a state",
                 "responses": {
                     "200": {
-                        "description": "Uf encontrada",
+                        "description": "State Found",
                         "schema": {
                             "$ref": "#/definitions/Uf"
                         }
@@ -202,8 +217,8 @@
         },
         "/auth/verify": {
             "get": {
-                "summary": "Verifica validade do token",
-                "tags": ["Autenticação"],
+                "summary": "Verify token's autheticity",
+                "tags": ["Authentication"],
                 "parameters": [
                     {
                         "name": "authorization",
@@ -214,20 +229,20 @@
                 "produces": ["application/json"],
                 "responses": {
                     "200": {
-                        "description": "Mensagem"
+                        "description": "Message"
                     }
                 }
             }
         },
         "/auth": {
             "post": {
-                "summary": "Login do usuário",
-                "tags": ["Autenticação"],
+                "summary": "User login",
+                "tags": ["Authentication"],
                 "parameters": [
                     {
                         "name": "Login",
                         "in": "body",
-                        "description": "Login e senha do usuário",
+                        "description": "User's email and password",
                         "schema": {
                             "$ref": "#/definitions/Login"
                         }
@@ -236,9 +251,34 @@
                 "produces": ["application/json"],
                 "responses": {
                     "200": {
-                        "description": "Dados do usuário",
+                        "description": "User data",
                         "schema": {
-                            "$ref": "#/definitions/Usuario"
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "summary": "New Users",
+                "tags": ["Authentication"],
+                "parameters": [
+                    {
+                        "name": "Register new user",
+                        "in": "body",
+                        "description": "User's data",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "User data",
+                        "schema": {
+                            "$ref": "#/definitions/User"
                         }
                     }
                 }
@@ -246,37 +286,52 @@
         }
     },
     "definitions": {
-        "Message": {
-            "required": ["titulo", "corpo"],
+        "Artist": {
+            "required": ["name", "instagram_url", "instagram_username", "estado"],
             "properties": {
-                "titulo": {
+                "id": {
+                    "type": "number"
+                },
+                "name": {
                     "type": "string"
                 },
-                "corpo": {
+                "instagram_url": {
                     "type": "string"
                 },
-                "isAtivo": {
-                    "type": "boolean"
+                "instagram_username": {
+                    "type": "string"
                 },
-                "uf": {
+                "url": {
+                    "type": "string"
+                },
+                "tags": {
+                    "type": "string"
+                },
+                "estado": {
                     "type": "number"
                 }
             }
         },
-        "Messages": {
+        "Artists": {
             "type": "array",
-            "$ref": "#/definitions/Message"
+            "$ref": "#/definitions/Artist"
         },
         "Uf": {
             "properties": {
                 "id": {
                     "type": "number"
                 },
+                "codigoUf": {
+                    "type": "number"
+                },
                 "nome": {
                     "type": "string"
                 },
-                "sigla": {
+                "uf": {
                     "type": "string"
+                },
+                "regiao": {
+                    "type": "number"
                 }
             }
         },
@@ -285,15 +340,15 @@
             "$ref": "#/definitions/Uf"
         },
         "Login": {
-            "required": ["login", "senha"],
+            "required": ["email", "password"],
             "properties": {
-                "login": {
+                "email": {
                     "type": "string"
                 },
-                "senha": { "type": "string" }
+                "password": { "type": "string" }
             }
         },
-        "Usuario": {
+        "User": {
             "properties": {
                 "token": { "type": "string" },
                 "user": {
@@ -301,9 +356,8 @@
                     "properties": {
                         "id": { "type": "number" },
                         "nome": { "type": "string" },
-                        "cargo": { "type": "string" },
-                        "login": { "type": "string" },
-                        "ultimoAcesso": { "type": "string" }
+                        "email": { "type": "string" },
+                        "password": { "type": "string" }
                     }
                 }
             }

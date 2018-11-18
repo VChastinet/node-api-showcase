@@ -4,7 +4,7 @@ const verifyToken = require ('../shared/util/verify-token');
 
 const router = express.Router();
 
-router.get('/:idUf', verifyToken, controller.getOne);
-router.get('/', verifyToken, controller.getAll);
+router.get('/:idUf', controller.getOne);
+router.get('/', controller.getAll);
 
 module.exports = router;
