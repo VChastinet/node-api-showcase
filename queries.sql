@@ -1,10 +1,61 @@
-
-
+-- GET USER
 SELECT * FROM users WHERE email = $1;
+-- * --
+
+-- CREATE NEW USER
 INSERT INTO users (email, name, password) VALUES ($1, $2, $3);
-SELECT a.*, uf.nome AS nome_estado, uf.uf AS sigla FROM artist AS a INNER JOIN estado AS uf ON uf.id = a.estado;
-SELECT a.*, uf.nome AS nome_estado, uf.uf AS sigla FROM artist AS a INNER JOIN estado AS uf ON uf.id = a.estado WHERE estado = $1;
-SELECT a.*, uf.nome AS nome_estado, uf.uf AS sigla FROM artist AS a INNER JOIN estado AS uf ON uf.id = a.estado WHERE LOWER(tags) LIKE LOWER('%$1%');
-SELECT a.*, uf.nome AS nome_estado, uf.uf AS sigla FROM artist AS a INNER JOIN estado AS uf ON uf.id = a.estado WHERE LOWER(name) LIKE LOWER('%$1%');
-UPDATE artist SET (name, instagram_url, instagram_username, url, tags, estado) = ($1, $2, $3, $4, $5, $6) WHERE id = $7;
-INSERT INTO artist (name, instagram_url, instagram_username, url, tags, estado) VALUES ($1, $2, $3, $4, $5, $6);
+-- * --
+
+-- GET ALL ARTISTS
+SELECT a.id, a.name, a.instagram_username, a.instagram_url, a.url, t.name AS tags, uf.nome AS estado, uf.uf AS sigla
+FROM artist AS a
+       INNER JOIN estado AS uf ON uf.id = a.estado
+       LEFT JOIN artists_tags AS a_t ON a_t.artist_id = a.id
+       LEFT JOIN tags t on a_t.tag_id = t.id;
+-- * --
+
+-- GET ALL ARTISTS BY UF
+SELECT a.id, a.name, a.instagram_username, a.instagram_url, a.url, t.name AS tags, uf.nome AS estado, uf.uf AS sigla
+FROM artist AS a
+       INNER JOIN estado AS uf ON uf.id = a.estado
+       LEFT JOIN artists_tags AS a_t ON a_t.artist_id = a.id
+       LEFT JOIN tags t on a_t.tag_id = t.id WHERE uf.id = $1;
+-- * --
+
+-- GET ALL ARTISTS BY TAGS
+SELECT a.id, a.name, a.instagram_username, a.instagram_url, a.url, t.name AS tags, uf.nome AS estado, uf.uf AS sigla
+FROM artist AS a
+       INNER JOIN estado AS uf ON uf.id = a.estado
+       LEFT JOIN artists_tags AS a_t ON a_t.artist_id = a.id
+       LEFT JOIN tags t on a_t.tag_id = t.id WHERE t.id = $1;
+-- * --
+
+-- GET ARTIST BY NAME
+SELECT a.id, a.name, a.instagram_username, a.instagram_url, a.url, t.name AS tags, uf.nome AS estado, uf.uf AS sigla
+FROM artist AS a
+       INNER JOIN estado AS uf ON uf.id = a.estado
+       LEFT JOIN artists_tags AS a_t ON a_t.artist_id = a.id
+       LEFT JOIN tags t on a_t.tag_id = t.id WHERE LOWER(a.name) LIKE LOWER('%$1%');
+-- * --
+
+-- UPDATE ARTIST
+UPDATE artist SET (name, instagram_url, instagram_username, url, estado) = ($1, $2, $3, $4, $5) WHERE id = $6;
+    -- deleted tags
+    DELETE FROM artists_tags WHERE tag_id = $1 AND artist_id = $2;
+    -- added tags
+    SELECT id FROM tags WHERE LOWER(name) = LOWER($1);
+    INSERT INTO artists_tags(artist_id, tag_id) VALUES ($1, $2);
+        -- tag doesn't exists
+        INSERT INTO tags (name) VALUES ($1);
+        INSERT INTO artists_tags(artist_id, tag_id) VALUES ($1, $2);
+-- * --
+
+-- CREATE NEW ARTIST
+INSERT INTO artist (name, instagram_url, instagram_username, url, estado) VALUES ($1, $2, $3, $4, $5);
+    -- has tags
+    SELECT id FROM tags WHERE LOWER(name) = LOWER($1);
+    INSERT INTO artists_tags(artist_id, tag_id) VALUES ($1, $2);
+        -- tag doesn't exists
+        INSERT INTO tags (name) VALUES ($1);
+        INSERT INTO artists_tags(artist_id, tag_id) VALUES ($1, $2);
+-- * --
