@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/nodemon/bin/nodemon.js bin/server.js",
+    "start": "node bin/server.js",
+    "dev-start": "./node_modules/nodemon/bin/nodemon.js bin/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
