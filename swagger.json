@@ -25,7 +25,7 @@
             "description": "API for login and new users"
         }
     ],
-    "schemes": ["http"],
+    "schemes": ["https"],
     "consumes": ["application/json"],
     "produces": ["application/json"],
     "paths": {
