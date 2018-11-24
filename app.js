@@ -17,8 +17,7 @@ app.use(
 );
 app.use(bodyParser.json());
 
-app.use('/', index);
-app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/artist', artistRoute);
 app.use('/auth', authRoute);
 app.use('/uf', ufRoute);
