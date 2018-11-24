@@ -25,7 +25,7 @@
             "description": "API for login and new users"
         }
     ],
-    "schemes": ["https"],
+    "schemes": ["https", "http"],
     "consumes": ["application/json"],
     "produces": ["application/json"],
     "paths": {
@@ -100,8 +100,9 @@
                     "name": "TAG",
                     "in": "path",
                     "required": true,
-                    "description": "category tags",
-                    "type": "string"
+                    "description": "Array of strings",
+                    "type": "array",
+                    "items": {"type": "string"}
                 }
             ],
             "get": {

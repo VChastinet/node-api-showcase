@@ -18,7 +18,7 @@ exports.getOne = (req, res, next) => {
 
 function manageGet(data, res) {
     if (!data.rowCount) {
-        res.status(statusCodeEnum.NO_CONTENT);
+        res.status(statusCodeEnum.NO_CONTENT).send();
         return;
     }
     
