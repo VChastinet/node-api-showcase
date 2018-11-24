@@ -13,7 +13,7 @@
             "url": "https://github.com/VChastinet/node-api-showcase"
         }
     },
-    "host": "localhost:6660",
+    "host": "node-api-showcase.herokuapp.com",
     "basePath": "/",
     "tags": [
         {
