@@ -1,4 +1,5 @@
 const express = require('express');
+const index = require('./src/routes/index');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
@@ -16,7 +17,8 @@ app.use(
 );
 app.use(bodyParser.json());
 
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/', index);
+app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/artist', artistRoute);
 app.use('/auth', authRoute);
 app.use('/uf', ufRoute);
