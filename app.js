@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-const index = require('./src/routes/index');
 const artistRoute = require('./src/routes/artistRoute');
 const authRoute = require('./src/routes/authRoute');
 const ufRoute = require('./src/routes/ufRoute');
