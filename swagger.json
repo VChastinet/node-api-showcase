@@ -7,6 +7,10 @@
         "license": {
             "name": "MIT",
             "url": "https://opensource.org/licenses/MIT"
+        },
+        "contact": {
+            "name": "GITHUB",
+            "url": "https://github.com/VChastinet/node-api-showcase"
         }
     },
     "host": "node-api-showcase.herokuapp.com",
